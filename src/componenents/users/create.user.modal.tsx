@@ -21,6 +21,7 @@ const CreateUserModal = (props: IProps) => {
     const handleCloseCreateModal = () => {
         setName("")
         setEmail("")
+        setPassword("")
         setAge("")
         setAddress("")
         setGender("")

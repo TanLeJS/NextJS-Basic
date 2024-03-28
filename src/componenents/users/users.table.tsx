@@ -7,17 +7,22 @@ import CreateUserModal from './create.user.modal';
 import UpdateUserModal from './update.user.modal';
 
 
-interface IUsers {
+export interface IUsers {
     _id: string
     email: string
     name: string
     role: string
+    address: string
+    gender: string
+    age: string
+    password: string
 }
 
 const UserTable = () => {
     const [listUsers, setListUsers] = useState([])
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState<null | IUsers>(null);
     const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0b2tlbiBsb2dpbiIsImlzcyI6ImZyb20gc2VydmVyIiwiX2lkIjoiNjVmY2UwNzg3OTNmYmVlZWZlZGJmYjliIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJhZGRyZXNzIjoiVmlldE5hbSIsImlzVmVyaWZ5Ijp0cnVlLCJuYW1lIjoiSSdtIGFkbWluIiwidHlwZSI6IlNZU1RFTSIsInJvbGUiOiJBRE1JTiIsImdlbmRlciI6Ik1BTEUiLCJhZ2UiOjY5LCJpYXQiOjE3MTExMzg5NTksImV4cCI6MTc5NzUzODk1OX0.KADSxuVMuHr66jYjDd5-UjULo9sGJCAjBRGHbqvhiAc"
 
     useEffect(() => {
@@ -59,10 +64,10 @@ const UserTable = () => {
         {
             title: 'Actions',
             render: (value, record) => {
-
                 return (
                     <div>
                         <Button onClick={() => {
+                            setDataUpdate(record)
                             setIsUpdateModalOpen(true)
                         }}> Edit </Button>
                     </div>
@@ -100,6 +105,8 @@ const UserTable = () => {
                 getData={getData}
                 isUpdateModalOpen={isUpdateModalOpen}
                 setIsUpdateModalOpen={setIsUpdateModalOpen}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
             />
         </div >
     )
