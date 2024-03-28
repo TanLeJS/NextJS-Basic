@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, notification, Popconfirm } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from "react";
 // import "../../style/user.css";
@@ -36,18 +36,45 @@ const UserTable = () => {
                 "Content-Type": "application/json",
             }
         })
-        const d = await res.json()
+        const d = await res.json();
+        if (!d.data) {
+            notification.error({
+                message: JSON.stringify(d.message)
+            })
+        }
         setListUsers(d.data.result)
     }
 
-    // console.log("check render", listUsers) // mounting
+    const confirm = async (user: IUsers) => {
+        const res = await fetch(`http://localhost:8000/api/v1/users/${user._id}`, {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                "Content-Type": "application/json",
+            },
+        })
+        const d = await res.json()
+        if (d.data) {
+            //success
+            notification.success({
+                message: "Xoá user thành công",
+            })
+            await getData()
+        }
+        else {
+            //fail
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: JSON.stringify(d.message),
+            })
+        }
+    };
 
     const columns: ColumnsType<IUsers> = [
         {
             title: 'Email',
             dataIndex: 'email',
             render: (value, record) => {
-                console.log()
                 return (
                     <div>{record.email}</div>
                 )
@@ -70,6 +97,17 @@ const UserTable = () => {
                             setDataUpdate(record)
                             setIsUpdateModalOpen(true)
                         }}> Edit </Button>
+                        <Popconfirm
+                            title="Delete the user"
+                            description={`Are you sure to delete ${record.name}`}
+                            onConfirm={() => confirm(record)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button
+                                style={{ marginLeft: 20 }}
+                                danger>Delete</Button>
+                        </Popconfirm>
                     </div>
                 )
             }
