@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import InputTodo from "./Input-todo/input.todo";
 
 function App() {
+
+
   const [count, setCount] = useState(0);
   const name = "Hoi dan it";
   const age = 26;

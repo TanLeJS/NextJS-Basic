@@ -23,14 +23,21 @@ const UserTable = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [dataUpdate, setDataUpdate] = useState<null | IUsers>(null);
-    const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0b2tlbiBsb2dpbiIsImlzcyI6ImZyb20gc2VydmVyIiwiX2lkIjoiNjVmY2UwNzg3OTNmYmVlZWZlZGJmYjliIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJhZGRyZXNzIjoiVmlldE5hbSIsImlzVmVyaWZ5Ijp0cnVlLCJuYW1lIjoiSSdtIGFkbWluIiwidHlwZSI6IlNZU1RFTSIsInJvbGUiOiJBRE1JTiIsImdlbmRlciI6Ik1BTEUiLCJhZ2UiOjY5LCJpYXQiOjE3MTExMzg5NTksImV4cCI6MTc5NzUzODk1OX0.KADSxuVMuHr66jYjDd5-UjULo9sGJCAjBRGHbqvhiAc"
+    const access_token = localStorage.getItem("access_token") as string
+    const [meta, setMeta] = useState({
+        current: 1,
+        pageSize: 5,
+        pages: 0,
+        total: 0
+    })
 
     useEffect(() => {
         getData()
     }, [])
+
     const getData = async () => {
 
-        const res = await fetch("http://localhost:8000/api/v1/users/all", {
+        const res = await fetch(`http://localhost:8000/api/v1/users?current=${meta.current}&pageSize=${meta.pageSize}`, {
             headers: {
                 'Authorization': `Bearer ${access_token}`,
                 "Content-Type": "application/json",
@@ -43,6 +50,12 @@ const UserTable = () => {
             })
         }
         setListUsers(d.data.result)
+        setMeta({
+            current: d.data.meta.current,
+            pageSize: d.data.meta.pageSize,
+            pages: d.data.meta.pages,
+            total: d.data.meta.total
+        })
     }
 
     const confirm = async (user: IUsers) => {
@@ -114,6 +127,28 @@ const UserTable = () => {
         }
     ]
 
+    const handleOnChange = async (page: number, pageSize: number) => {
+        const res = await fetch(`http://localhost:8000/api/v1/users?current=${page}&pageSize=${pageSize}`, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                "Content-Type": "application/json",
+            }
+        })
+        const d = await res.json();
+        if (!d.data) {
+            notification.error({
+                message: JSON.stringify(d.message)
+            })
+        }
+        setListUsers(d.data.result)
+        setMeta({
+            current: d.data.meta.current,
+            pageSize: d.data.meta.pageSize,
+            pages: d.data.meta.pages,
+            total: d.data.meta.total
+        })
+    }
+
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -130,6 +165,14 @@ const UserTable = () => {
                 columns={columns}
                 dataSource={listUsers}
                 rowKey={"_id"}
+                pagination={{
+                    current: meta.current,
+                    pageSize: meta.pageSize,
+                    total: meta.total,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    onChange: (page: number, pageSize: number) => handleOnChange(page, pageSize),
+                    showSizeChanger: true
+                }}
             />
             <CreateUserModal
                 access_token={access_token}
