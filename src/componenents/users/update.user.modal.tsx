@@ -14,7 +14,6 @@ interface IProps {
 const UpdateUserModal = (props: IProps) => {
     const { access_token, getData,
         isUpdateModalOpen, setIsUpdateModalOpen, dataUpdate, setDataUpdate } = props
-    console.log("check data update", dataUpdate)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
