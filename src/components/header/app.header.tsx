@@ -16,6 +16,7 @@ import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 
@@ -62,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const router = useRouter()
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -162,6 +165,10 @@ export default function AppHeader() {
         </Menu>
     );
 
+    const handleRedirectHome = () => {
+        router.push("/")
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
@@ -176,7 +183,11 @@ export default function AppHeader() {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                            sx={{
+                                display: { xs: 'none', sm: 'block' },
+                                cursor: "pointer"
+                            }}
+                            onClick={() => handleRedirectHome()}
                         >
                             SoundCloud
                         </Typography>
