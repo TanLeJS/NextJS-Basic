@@ -1,13 +1,12 @@
 'use client'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import { Settings } from "react-slick";
-import { Box } from "@mui/material";
-import Button from "@mui/material/Button/Button";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button/Button";
 import Divider from '@mui/material/Divider';
+import Slider, { Settings } from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 
 const MainSlider = () => {
     const NextArrow = (props: any) => {
@@ -102,7 +101,6 @@ const MainSlider = () => {
             </Slider>
             <Divider />
         </Box>
-
     );
 }
 
