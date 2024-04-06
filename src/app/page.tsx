@@ -3,19 +3,6 @@ import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
 export default async function HomePage() {
 
-  // const res = await fetch("http://localhost:8000/api/v1/tracks/top", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     category: "CHILL",
-  //     limit: 10
-  //   })
-  // })
-  // console.log(">>> check res sever:", await res.json())
-
-
   const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: "http://localhost:8000/api/v1/tracks/top",
     method: "POST",
