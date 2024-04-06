@@ -4,6 +4,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button/Button";
 import Divider from '@mui/material/Divider';
+import Link from 'next/link';
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -90,7 +91,9 @@ const MainSlider = (props: IProps) => {
                     return (
                         <div className='track' key={track._id}>
                             <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`} />
-                            <h4>{track.title}</h4>
+                            <Link href={`/track/${track._id}?audio=${track.trackUrl}`}>
+                                <h4>{track.title}</h4>
+                            </Link>
                             <h5>{track.description}</h5>
                         </div>
                     )
