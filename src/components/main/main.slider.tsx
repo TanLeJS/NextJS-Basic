@@ -85,7 +85,6 @@ const MainSlider = (props: IProps) => {
             }}
         >
             <h2> {title} </h2>
-
             <Slider {...settings}>
                 {data.map(track => {
                     return (
