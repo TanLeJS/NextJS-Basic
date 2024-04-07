@@ -3,6 +3,7 @@
 import { useWavesurfer } from "@/utils/customHook";
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Tooltip } from "@mui/material";
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from 'wavesurfer.js';
@@ -213,17 +214,23 @@ const WaveTrack = () => {
                             {
                                 arrComments.map(item => {
                                     return (
-                                        <img
-                                            key={item.id}
-                                            style={{
-                                                height: 20, width: 20,
-                                                position: "absolute",
-                                                top: 71,
-                                                zIndex: 20,
-                                                left: calLeft(item.moment)
-                                            }}
-                                            src={`http://localhost:8000/images/chill1.png`}
-                                        />
+                                        <Tooltip title={item.content} arrow>
+                                            <img
+                                                onPointerMove={(e) => {
+                                                    const hover = hoverRef.current!;
+                                                    hover.style.width = calLeft(item.moment)
+                                                }}
+                                                key={item.id}
+                                                style={{
+                                                    height: 20, width: 20,
+                                                    position: "absolute",
+                                                    top: 71,
+                                                    zIndex: 20,
+                                                    left: calLeft(item.moment)
+                                                }}
+                                                src={`http://localhost:8000/images/chill1.png`}
+                                            />
+                                        </Tooltip>
                                     )
 
                                 })
