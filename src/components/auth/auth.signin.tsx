@@ -1,14 +1,18 @@
 "use client"
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import LockIcon from '@mui/icons-material/Lock';
 import { Avatar, Box, Button, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const AuthSignIn = (props: any) => {
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -19,7 +23,7 @@ const AuthSignIn = (props: any) => {
     const [errorUsername, setErrorUsername] = useState<string>("")
     const [errorPassword, setErrorPassword] = useState<string>("")
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsErrorUsername(false)
         setIsErrorPassword(false)
         setErrorUsername("")
@@ -34,7 +38,17 @@ const AuthSignIn = (props: any) => {
             setErrorPassword("Password is not empty")
             return
         }
-        console.log(username, password)
+        const res = await signIn("credentials", {
+            username: username,
+            password: password,
+            redirect: false
+        })
+        if (!res?.error) {
+            router.push("/")
+        } else {
+            alert("error")
+        }
+        console.log(">>> checl res", res)
     }
     return (
         <Box>
@@ -57,6 +71,10 @@ const AuthSignIn = (props: any) => {
                     }}
                 >
                     <div style={{ margin: "20px" }}>
+                        <Link href="/">
+                            <ArrowBackIcon />
+                        </Link>
+
                         <Box sx={{
                             display: "flex",
                             justifyContent: "center",
