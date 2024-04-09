@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -63,6 +64,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+
+    const { data: session } = useSession()
+
+    console.log(">>> check session: ", session)
+
     const router = useRouter()
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -109,7 +115,10 @@ export default function AppHeader() {
                     }}
                 >Profile</Link>
             </MenuItem>
-            <MenuItem>Log out</MenuItem>
+            <MenuItem onClick={() => {
+                handleMenuClose();
+                signOut()
+            }} >Log out</MenuItem>
         </Menu >
     );
 
@@ -211,11 +220,20 @@ export default function AppHeader() {
                                 textDecoration: "unset"
                             }
                         }}>
-                            <Link href={"/playlist"}>Playlists</Link>
-                            <Link href={"/like"}>Likes</Link>
-                            <span>Upload</span>
+                            {
+                                session ? <>
+                                    <Link href={"/playlist"}>Playlists</Link>
+                                    <Link href={"/like"}>Likes</Link>
+                                    <span>Upload</span>
+                                    <Avatar onClick={handleProfileMenuOpen} >Eric</Avatar>
+                                </> :
+                                    <>
+                                        <Link href={"#"}
+                                            onClick={() => signIn()}>Login</Link>
+                                    </>
+                            }
 
-                            <Avatar onClick={handleProfileMenuOpen} >Eric</Avatar>
+
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
