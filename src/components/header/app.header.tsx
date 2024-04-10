@@ -67,8 +67,6 @@ export default function AppHeader() {
 
     const { data: session } = useSession()
 
-    console.log(">>> check session: ", session)
-
     const router = useRouter()
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

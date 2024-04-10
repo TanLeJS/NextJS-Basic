@@ -5,12 +5,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import LockIcon from '@mui/icons-material/Lock';
-import { Avatar, Box, Button, Divider, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Divider, Grid, IconButton, InputAdornment, Snackbar, TextField, Typography } from "@mui/material";
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
 const AuthSignIn = (props: any) => {
     const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -22,6 +21,9 @@ const AuthSignIn = (props: any) => {
 
     const [errorUsername, setErrorUsername] = useState<string>("")
     const [errorPassword, setErrorPassword] = useState<string>("")
+
+    const [openMessage, setOpenMessage] = useState<boolean>(false)
+    const [resMessage, setResMessage] = useState<string>("")
 
     const handleSubmit = async () => {
         setIsErrorUsername(false)
@@ -45,10 +47,11 @@ const AuthSignIn = (props: any) => {
         })
         if (!res?.error) {
             router.push("/")
-        } else {
-            alert("error")
         }
-        console.log(">>> checl res", res)
+        else {
+            setOpenMessage(true)
+            setResMessage(res.error)
+        }
     }
     return (
         <Box>
@@ -103,6 +106,11 @@ const AuthSignIn = (props: any) => {
                         />
                         <TextField
                             onChange={(event) => setPassword(event.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleSubmit()
+                                }
+                            }}
                             variant='outlined'
                             margin='normal'
                             required
@@ -163,12 +171,23 @@ const AuthSignIn = (props: any) => {
 
                                 <GoogleIcon titleAccess='Login with Google' />
                             </Avatar>
-
                         </Box>
                     </div>
 
                 </Grid>
             </Grid>
+            <Snackbar
+                open={openMessage}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={() => setOpenMessage(false)}
+                    severity="error"
+                    sx={{ width: '100%' }}
+                >
+                    {resMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
