@@ -1,8 +1,11 @@
+import UploadTabs from "@/components/track/upload.tabs"
+import { Container } from "@mui/material"
+
 const UploadPage = () => {
     return (
-        <div>
-            Upload Page
-        </div>
+        <Container>
+            <UploadTabs />
+        </Container>
     )
 }
 
