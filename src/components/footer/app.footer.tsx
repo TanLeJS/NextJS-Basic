@@ -1,9 +1,8 @@
 'use client'
-import { TrackContext } from '@/lib/track.wrapper';
+import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/utils/customHook';
 import { Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import { useContext } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
@@ -11,9 +10,9 @@ const AppFooter = () => {
 
     const hasMounted = useHasMounted();
 
-    const track = useContext(TrackContext)
-    
-    console.log(">>> check track", track)
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+
+    console.log(">>> check track", currentTrack)
     if (!hasMounted) return (<></>)//fragment
     return (
         <div style={{ marginTop: 50 }}>
