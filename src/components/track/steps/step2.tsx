@@ -160,7 +160,6 @@ const Step2 = (props: IProps) => {
             setValue(0)
         } else {
             toast.error(res.message)
-
         }
     }
     return (
