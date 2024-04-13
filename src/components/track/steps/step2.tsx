@@ -1,14 +1,16 @@
 "use client"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, MenuItem, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 interface IProps {
     trackUpload: {
         fileName: string,
-        percent: number
+        percent: number,
+        uploadedTrackName: string,
     }
 }
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
@@ -60,11 +62,35 @@ function LinearWithValueLabel(props: IProps) {
     );
 }
 
-
+interface INewTrack {
+    title: string,
+    description: string,
+    trackUrl: string,
+    imgUrl: string,
+    category: string
+}
 
 const Step2 = (props: IProps) => {
     const { trackUpload } = props
+    const [info, setInfo] = React.useState<INewTrack>(
+        {
+            title: "",
+            description: "",
+            trackUrl: "",
+            imgUrl: "",
+            category: ""
+        }
+    )
+    React.useEffect(() => {
+        if (trackUpload && trackUpload.uploadedTrackName) {
+            setInfo({
+                ...info,
+                trackUrl: trackUpload.uploadedTrackName
+            })
+        }
+    }, [trackUpload])
 
+    console.log(">>> check info", info)
     const category = [
         {
             value: "CHILL",
@@ -109,19 +135,39 @@ const Step2 = (props: IProps) => {
                     </div>
                 </Grid>
                 <Grid item xs={6} md={8}>
-                    <TextField id="standard-basic" label="Title" variant="standard" fullWidth />
-                    <TextField id="standard-basic" label="Description" variant="standard" fullWidth />
                     <TextField
-                        id="standard-select-currency-native"
+                        value={info?.title}
+                        onChange={(e) => setInfo({
+                            ...info,
+                            title: e.target.value
+                        })}
+                        label="Title"
+                        variant="standard"
+                        fullWidth />
+                    <TextField
+                        value={info?.description}
+                        onChange={(e) => setInfo({
+                            ...info,
+                            description: e.target.value
+                        })}
+                        label="Description"
+                        variant="standard"
+                        fullWidth />
+                    <TextField
+                        value={info?.category}
+                        onChange={(e) => setInfo({
+                            ...info,
+                            category: e.target.value
+                        })}
                         select
                         label="Category"
                         variant="standard"
                         fullWidth
                     >
                         {category.map((option) => (
-                            <option key={option.value} value={option.value}>
+                            <MenuItem key={option.value} value={option.value}>
                                 {option.label}
-                            </option>
+                            </MenuItem>
                         ))}
                     </TextField>
                     <Button
