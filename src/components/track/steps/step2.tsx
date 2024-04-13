@@ -1,5 +1,6 @@
 "use client"
 import { sendRequest } from '@/utils/api';
+import { useToast } from '@/utils/toast';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, Grid, MenuItem, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -15,6 +16,7 @@ interface IProps {
         percent: number,
         uploadedTrackName: string,
     }
+    setValue: (v: number) => void,
 }
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -45,6 +47,7 @@ const VisuallyHiddenInput = styled('input')({
 function InputFileUpload(props: any) {
     const { setInfo, info } = props
     const { data: session } = useSession()
+    const toast = useToast()
     const handleUploadImage = async (image: any) => {
         const formData = new FormData()
         formData.append("fileUpload", image)
@@ -62,7 +65,7 @@ function InputFileUpload(props: any) {
             })
         } catch (error) {
             //@ts-ignore
-            alert(error?.response?.data)
+            toast.error(error?.response?.data)
         }
     }
     return (
@@ -101,8 +104,9 @@ interface INewTrack {
 }
 
 const Step2 = (props: IProps) => {
+    const toast = useToast()
     const { data: session } = useSession()
-    const { trackUpload } = props
+    const { trackUpload, setValue } = props
     const [info, setInfo] = React.useState<INewTrack>(
         {
             title: "",
@@ -152,9 +156,11 @@ const Step2 = (props: IProps) => {
             }
         })
         if (res.data) {
-            alert("create success")
+            toast.success("Create a new track successfully")
+            setValue(0)
         } else {
-            alert(res.message)
+            toast.error(res.message)
+
         }
     }
     return (
@@ -164,7 +170,9 @@ const Step2 = (props: IProps) => {
                     {props.trackUpload.fileName}
                 </div>
                 <LinearWithValueLabel
-                    trackUpload={trackUpload} />
+                    trackUpload={trackUpload}
+                    setValue={setValue}
+                />
             </div>
             <Grid container spacing={2} mt={5}>
                 <Grid item xs={6} md={4}

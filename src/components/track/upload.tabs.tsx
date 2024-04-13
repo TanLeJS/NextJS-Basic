@@ -48,8 +48,8 @@ const UploadTabs = () => {
         <Box sx={{ width: '100%', border: "1px solid #ccc", mt: 5 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Track" />
-                    <Tab label="Basic information   " />
+                    <Tab label="Track" disabled={value !== 0} />
+                    <Tab label="Basic information" disabled={value !== 1} />
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
@@ -62,6 +62,7 @@ const UploadTabs = () => {
             <CustomTabPanel value={value} index={1}>
                 <Step2
                     trackUpload={trackUpload}
+                    setValue={setValue}
                 />
             </CustomTabPanel>
         </Box>
