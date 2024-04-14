@@ -11,6 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 
 const ProfileTrack = (props: any) => {
     const { data } = props
@@ -21,9 +22,18 @@ const ProfileTrack = (props: any) => {
         <Card sx={{ display: 'flex', justifyContent: "space-between" }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
-                        {data.title}
-                    </Typography>
+
+                    <Link
+                        style={{
+                            textDecoration: 'none',
+                            color: "unset"
+                        }}
+                        href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`}>
+                        <Typography component="div" variant="h5">
+                            {data.title}
+                        </Typography>
+                    </Link>
+
                     <Typography variant="subtitle1" color="text.secondary" component="div">
                         {data.description}
                     </Typography>
@@ -71,7 +81,7 @@ const ProfileTrack = (props: any) => {
                 image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${data.imgUrl}`}
                 alt="Live from space album cover"
             />
-        </Card>
+        </Card >
     )
 }
 
