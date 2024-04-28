@@ -22,6 +22,7 @@ declare global {
         "createdAt": string,
         "updatedAt": string
     }
+
     interface IRequest {
         url: string;
         method: string;
@@ -59,5 +60,26 @@ declare global {
         setCurrentTrack: (v: IShareTrack) => void
     }
 
-
+    interface ITrackComment {
+        _id: string,
+        content: string,
+        moment: number,
+        user: {
+            _id: string,
+            email: string,
+            name: string,
+            role: string,
+            type: string,
+        },
+        track: {
+            _id: string,
+            title: string,
+            description: string,
+            trackURL: string,
+        },
+        isDeleted: boolean,
+        createdAt: boolean,
+        updatedAt: boolean
+    
+    }
 }

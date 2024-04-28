@@ -8,20 +8,19 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 const AppFooter = () => {
-
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     const playerRef = useRef(null)
     const hasMounted = useHasMounted();
 
-    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
-    useEffect(() => {
 
-        //@ts-ignore
-        if (currentTrack?.isPlaying) {
-            //@ts-ignore
-            playerRef?.current?.audio?.current?.play()
-        } else {
+    useEffect(() => {
+        if (currentTrack?.isPlaying === false) {
             //@ts-ignore
             playerRef?.current?.audio?.current?.pause()
+        }
+        if (currentTrack?.isPlaying === true) {
+            //@ts-ignore
+            playerRef?.current?.audio?.current?.play()
         }
     }, [currentTrack])
 

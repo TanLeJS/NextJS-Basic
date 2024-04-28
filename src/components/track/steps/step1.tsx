@@ -86,7 +86,14 @@ const Step1 = (props: IProps) => {
     const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
         onDrop,
         accept: {
-            "audio": [".mp3", ".m4a"]
+            "audio/mpeg": [".mp3"],
+            "audio/wav": [".wav"],
+            "audio/webm": [".webm"],
+            "audio/flac": [".flac"],
+            "audio/x-m4a": [".m4a"],
+            "video/mp4": [".mp4"],
+            "video/mpeg": [".mpeg"],
+            "video/webm": [".webm"],
         }
     })
 
