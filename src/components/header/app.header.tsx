@@ -1,10 +1,11 @@
 "use client"
+import { fetchDefaultImages } from '@/utils/api';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -223,7 +224,16 @@ export default function AppHeader() {
                                     <Link href={"/playlist"}>Playlists</Link>
                                     <Link href={"/like"}>Likes</Link>
                                     <Link href={"/track/upload"}>Upload</Link>
-                                    <Avatar onClick={handleProfileMenuOpen} >Eric</Avatar>
+                                    {/* <Avatar onClick={handleProfileMenuOpen} >Eric</Avatar> */}
+                                    <img
+                                        onClick={handleProfileMenuOpen}
+                                        style={{
+                                            height: 35,
+                                            width: 35,
+                                            cursor: "pointer"
+                                        }}
+                                        src={fetchDefaultImages(session.user.type)}
+                                    />
                                 </> :
                                     <>
                                         <Link href={"/auth/signin"}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useTrackContext } from "@/lib/track.wrapper";
+import { fetchDefaultImages } from "@/utils/api";
 import { useWavesurfer } from "@/utils/customHook";
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -228,7 +229,7 @@ const WaveTrack = (props: IProps) => {
                                                     zIndex: 20,
                                                     left: calLeft(item.moment)
                                                 }}
-                                                src={`http://localhost:8000/images/chill1.png`}
+                                                src={fetchDefaultImages(item.user.type)}
                                             />
                                         </Tooltip>
                                     )
@@ -248,12 +249,21 @@ const WaveTrack = (props: IProps) => {
                         alignItems: "center"
                     }}
                 >
-                    <div style={{
-                        background: "#ccc",
-                        width: 250,
-                        height: 250
-                    }}>
-                    </div>
+                    {track?.imgUrl ?
+                        <img
+                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                            width={250}
+                            height={250}
+
+                        />
+                        :
+                        <div style={{
+                            background: "#ccc",
+                            width: 250,
+                            height: 250
+                        }}>
+                        </div>
+                    }
                 </div>
             </div>
         </div >
