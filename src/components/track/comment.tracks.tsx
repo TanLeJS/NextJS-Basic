@@ -1,4 +1,5 @@
 import { fetchDefaultImages, sendRequest } from "@/utils/api";
+import { useHasMounted } from "@/utils/customHook";
 import { Box, TextField } from "@mui/material";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -16,6 +17,7 @@ interface IProps {
 
 const CommentTrack = (props: IProps) => {
     const router = useRouter()
+    const hasMounted = useHasMounted();
     const { track, comments, wavesurfer } = props
     const { data: session } = useSession()
     const [yourComment, setYourComment] = useState("")
@@ -113,7 +115,7 @@ const CommentTrack = (props: IProps) => {
                                     </div>
                                 </Box>
                                 <div style={{ fontSize: "12px", color: "#999" }}>
-                                    {dayjs(comment.createdAt).fromNow()}
+                                    {hasMounted && dayjs(comment.createdAt).fromNow()}
                                 </div>
                             </Box>
                         )

@@ -1,5 +1,4 @@
 'use client'
-
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages } from "@/utils/api";
 import { useWavesurfer } from "@/utils/customHook";
@@ -10,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from 'wavesurfer.js';
 import CommentTrack from "./comment.tracks";
+import LikesTrack from "./like.tracks";
 import './wave.scss';
 
 interface IProps {
@@ -266,6 +266,10 @@ const WaveTrack = (props: IProps) => {
                         </div>
                     }
                 </div>
+            </div>
+            <div>
+                <LikesTrack
+                    track={track} />
             </div>
             <div>
                 <CommentTrack
