@@ -9,6 +9,7 @@ import { Tooltip } from "@mui/material";
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from 'wavesurfer.js';
+import CommentTrack from "./comment.tracks";
 import './wave.scss';
 
 interface IProps {
@@ -265,6 +266,12 @@ const WaveTrack = (props: IProps) => {
                         </div>
                     }
                 </div>
+            </div>
+            <div>
+                <CommentTrack
+                    comments={comments}
+                    track={track}
+                />
             </div>
         </div >
     )
