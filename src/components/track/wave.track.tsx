@@ -1,11 +1,11 @@
 'use client'
 import { useTrackContext } from "@/lib/track.wrapper";
-import { fetchDefaultImages } from "@/utils/api";
+import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import { useWavesurfer } from "@/utils/customHook";
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Tooltip } from "@mui/material";
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from 'wavesurfer.js';
 import CommentTrack from "./comment.tracks";
@@ -20,6 +20,8 @@ interface IProps {
 const WaveTrack = (props: IProps) => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     const { track, comments } = props
+    const router = useRouter()
+    const firstViewRef = useRef(true)
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
     const containerRef = useRef<HTMLDivElement>(null);
@@ -122,6 +124,21 @@ const WaveTrack = (props: IProps) => {
         }
     }, [track])
 
+    const handleIncreaseView = async () => {
+        if (firstViewRef.current) {
+            await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
+                url: `http://localhost:8000/api/v1/tracks/increase-view`,
+                method: "POST",
+                body: {
+                    trackId: track?._id
+                }
+            })
+            router.refresh()
+            firstViewRef.current = false
+        }
+
+    }
+
     return (
         <div style={{ marginTop: 20 }}>
             <div
@@ -147,6 +164,7 @@ const WaveTrack = (props: IProps) => {
                             <div
                                 onClick={() => {
                                     onPlayClick();
+                                    handleIncreaseView();
                                     if (track && wavesurfer) {
                                         setCurrentTrack({ ...track, isPlaying: false })
                                     }
