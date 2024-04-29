@@ -80,6 +80,9 @@ declare global {
         isDeleted: boolean,
         createdAt: boolean,
         updatedAt: boolean
-    
+    }
+
+    interface WaveSurfer {
+        
     }
 }
