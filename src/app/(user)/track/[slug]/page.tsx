@@ -13,11 +13,14 @@ export async function generateMetadata(
     { params, searchParams }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
-    // read route params
+
+    const temp = params?.slug?.split('.html') ?? [];
+    const temp1 = temp[0]?.split('-') ?? [];
+    const id = temp1[temp1.length - 1]
 
     // fetch data
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: "GET",
     })
 
@@ -41,8 +44,13 @@ const DetailTrackPage = async (props: any) => {
 
     const { params } = props
 
+    const temp = params?.slug?.split('.html') ?? [];
+    const temp1 = temp[0]?.split('-') ?? [];
+    const id = temp1[temp1.length - 1]
+
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
         method: "GET",
         nextOption: { cache: "no-store" }
     })
