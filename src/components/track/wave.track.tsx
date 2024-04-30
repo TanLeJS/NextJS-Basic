@@ -231,7 +231,7 @@ const WaveTrack = (props: IProps) => {
                         ></div>
                         <div className="comment"
                             style={{ position: "relative" }}>
-                            {
+                            {comments &&
                                 comments.map(item => {
                                     return (
                                         <Tooltip title={item.content} arrow key={item._id}>
