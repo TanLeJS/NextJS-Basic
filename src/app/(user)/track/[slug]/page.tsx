@@ -27,10 +27,13 @@ export async function generateMetadata(
 
     return {
         title: res.data?.title,
-        description: res.data?.description
-        // openGraph: {
-        //     images: ['/some-specific-page-image.jpg', ...previousImages],
-        // },
+        description: res.data?.description,
+        openGraph: {
+            title: 'Hỏi Dân IT',
+            description: 'Beyond Your Coding Skills',
+            type: 'website',
+            images: [`https://raw.githubusercontent.com/hoidanit/images-hosting/master/eric.png`],
+        },
     }
 }
 
@@ -58,7 +61,7 @@ const DetailTrackPage = async (props: any) => {
             <div>
                 <WaveTrack
                     track={res?.data ?? null}
-                    comments={res1?.data?.result ?? null}
+                    comments={res1?.data?.result ?? null!}
                 />
             </div>
         </Container>

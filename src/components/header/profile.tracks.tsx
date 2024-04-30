@@ -1,6 +1,5 @@
 "use client"
 import { useTrackContext } from '@/lib/track.wrapper';
-import { useTheme } from '@emotion/react';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -10,14 +9,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 
 const ProfileTrack = (props: any) => {
     const { data } = props
-    const theme = useTheme();
+    const theme = useTheme()
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
-
     return (
         <Card sx={{ display: 'flex', justifyContent: "space-between" }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -42,7 +41,6 @@ const ProfileTrack = (props: any) => {
                     <IconButton aria-label="previous">
                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                     </IconButton>
-
                     {
                         (data._id !== currentTrack._id ||
                             data._id === currentTrack._id && currentTrack.isPlaying === false

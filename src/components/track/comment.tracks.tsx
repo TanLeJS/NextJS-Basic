@@ -115,7 +115,9 @@ const CommentTrack = (props: IProps) => {
                                     </div>
                                 </Box>
                                 <div style={{ fontSize: "12px", color: "#999" }}>
-                                    {hasMounted && dayjs(comment.createdAt).fromNow()}
+                                    {/* @ts-ignore */}
+                                    {hasMounted && dayjs(comment?.createdAt).fromNow()}
+
                                 </div>
                             </Box>
                         )
