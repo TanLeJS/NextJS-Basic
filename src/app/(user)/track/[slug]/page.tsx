@@ -1,8 +1,8 @@
 import WaveTrack from '@/components/track/wave.track'
 import { sendRequest } from '@/utils/api'
 import { Container } from '@mui/material'
-
 import type { Metadata, ResolvingMetadata } from 'next'
+import { notFound } from 'next/navigation'
 
 type Props = {
     params: { slug: string }
@@ -25,7 +25,6 @@ export async function generateMetadata(
     })
 
     // // optionally access and extend (rather than replace) parent metadata
-    // const previousImages = (await parent).openGraph?.images || []
 
     return {
         title: res.data?.title,
@@ -65,12 +64,17 @@ const DetailTrackPage = async (props: any) => {
             sort: "-createdAt"
         }
     })
+
+    if (!res?.data) {
+        notFound()
+    }
+
     return (
         <Container>
             <div>
                 <WaveTrack
                     track={res?.data ?? null}
-                    comments={res1?.data?.result ?? null!}
+                    comments={res1?.data?.result ?? []}
                 />
             </div>
         </Container>
