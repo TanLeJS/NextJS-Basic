@@ -40,7 +40,6 @@ export async function generateMetadata(
 
 const DetailTrackPage = async (props: any) => {
 
-
     const { params } = props
 
     const temp = params?.slug?.split('.html') ?? [];
