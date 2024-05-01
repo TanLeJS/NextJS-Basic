@@ -5,6 +5,7 @@ import { useWavesurfer } from "@/utils/customHook";
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Tooltip } from "@mui/material";
+import Image from "next/image";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WaveSurferOptions } from 'wavesurfer.js';
@@ -235,20 +236,21 @@ const WaveTrack = (props: IProps) => {
                                 comments.map(item => {
                                     return (
                                         <Tooltip title={item.content} arrow key={item._id}>
-                                            <img
+                                            <Image
                                                 onPointerMove={(e) => {
                                                     const hover = hoverRef.current!;
                                                     hover.style.width = calLeft(item.moment + 3)
                                                 }}
-                                                key={item._id}
+                                                src={fetchDefaultImages(item.user.type)}
+                                                alt="track comment"
+                                                height={20}
+                                                width={20}
                                                 style={{
-                                                    height: 20, width: 20,
                                                     position: "absolute",
                                                     top: 71,
                                                     zIndex: 20,
                                                     left: calLeft(item.moment)
                                                 }}
-                                                src={fetchDefaultImages(item.user.type)}
                                             />
                                         </Tooltip>
                                     )
@@ -269,11 +271,11 @@ const WaveTrack = (props: IProps) => {
                     }}
                 >
                     {track?.imgUrl ?
-                        <img
+                        <Image
                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
                             width={250}
                             height={250}
-
+                            alt="image-track"
                         />
                         :
                         <div style={{

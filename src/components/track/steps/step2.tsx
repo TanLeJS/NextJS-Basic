@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import React from 'react';
 interface IProps {
     trackUpload: {
@@ -186,10 +187,12 @@ const Step2 = (props: IProps) => {
                     <div style={{ height: 250, width: 250, background: "#ccc" }}>
                         <div>
                             {info.imgUrl &&
-                                <img
+                                <Image
                                     height={250}
                                     width={250}
-                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} />
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
+                                    alt='track-image'
+                                />
                             }
                         </div>
 
