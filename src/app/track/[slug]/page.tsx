@@ -38,6 +38,14 @@ export async function generateMetadata(
     }
 }
 
+export async function generateStaticParams() {
+    return [
+        { slug: "xi-mang-pho-65fce078793fbeeefedbfba7.html" },
+        { slug: "sau-con-mua-65fce078793fbeeefedbfba6.html" },
+        { slug: "khi-con-mo-dan-phai-65fce078793fbeeefedbfba4.html" }
+    ]
+}
+
 const DetailTrackPage = async (props: any) => {
 
     const { params } = props
@@ -50,7 +58,7 @@ const DetailTrackPage = async (props: any) => {
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
         method: "GET",
-        nextOption: { cache: "no-store" }
+        // nextOption: { cache: "no-store" }
     })
 
     const res1 = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
@@ -63,6 +71,7 @@ const DetailTrackPage = async (props: any) => {
             sort: "-createdAt"
         }
     })
+    await new Promise(resolve => setTimeout(resolve, 5000))
 
     if (!res?.data) {
         notFound()

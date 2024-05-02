@@ -77,8 +77,6 @@ const Step1 = (props: IProps) => {
                 //@ts-ignore
                 alert(error?.response?.data)
             }
-
-
         }
 
 

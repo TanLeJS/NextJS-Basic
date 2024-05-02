@@ -5,8 +5,6 @@ import { Container } from "@mui/material";
 import { getServerSession } from "next-auth/next";
 
 
-
-
 export default async function HomePage() {
 
   const session = await getServerSession(authOptions);
