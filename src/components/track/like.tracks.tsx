@@ -52,7 +52,16 @@ const LikesTrack = (props: IProps) => {
                 Authorization: `Bearer ${session?.access_token}`,
             },
         })
+
         fetchData()
+        await sendRequest<IBackendRes<any>>({
+            url: `/api/revalidate`,
+            method: "POST",
+            queryParams: {
+                tag: "track-by-id",
+                secret: "justArandomString"
+            }
+        })
         router.refresh()
     };
 

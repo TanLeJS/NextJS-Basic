@@ -159,6 +159,15 @@ const Step2 = (props: IProps) => {
         if (res.data) {
             toast.success("Create a new track successfully")
             setValue(0)
+
+            await sendRequest<IBackendRes<any>>({
+                url: `/api/revalidate`,
+                method: "POST",
+                queryParams: {
+                    tag: "track-by-profile",
+                    secret: "justArandomString"
+                }
+            })
         } else {
             toast.error(res.message)
         }
