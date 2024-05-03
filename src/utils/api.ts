@@ -87,7 +87,7 @@ export const fetchDefaultImages = (type: string) => {
     return "/user/default-user.png"
 }
 
-export const convertSLugUrl = (str: string) => {
+export const convertSlugUrl = (str: string) => {
     if (!str) return ;
     str = slugify( str, {
         lower: true,
