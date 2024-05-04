@@ -1,42 +1,45 @@
-'use client'
+"use client"
+
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/toast';
 import AddIcon from '@mui/icons-material/Add';
-import Box from '@mui/material/Box';
-import Button from "@mui/material/Button";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, useTheme } from "@mui/material";
 import Chip from '@mui/material/Chip';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import { Theme, useTheme } from '@mui/material/styles';
-import { useSession } from "next-auth/react";
+import { Theme } from '@mui/material/styles';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface IProps {
-    playlists: IPlaylist[];
-    tracks: ITrackTop[];
+    playlists: IPlaylist[]
+    tracks: ITrackTop[]
+}
 
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+    return {
+        fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+    };
 }
 
 const AddPlaylistTrack = (props: IProps) => {
-    const { playlists, tracks } = props;
-
+    const { playlists, tracks } = props
     const [open, setOpen] = useState(false);
+    const [playlistId, setPlaylistId] = useState('');
+    const [tracksId, setTracksId] = useState<string[]>([])
+    const theme = useTheme();
+
     const toast = useToast();
     const router = useRouter();
     const { data: session } = useSession();
 
-    const [playlistId, setPlaylistId] = useState('');
-    const [tracksId, setTracksId] = useState<string[]>([]);
-
-    const theme = useTheme();
 
     const handleClose = (event: any, reason: any) => {
         if (reason && reason == "backdropClick")
@@ -45,15 +48,6 @@ const AddPlaylistTrack = (props: IProps) => {
         setPlaylistId("");
         setTracksId([]);
     };
-
-    const getStyles = (name: string, tracksId: readonly string[], theme: Theme) => {
-        return {
-            fontWeight:
-                tracksId.indexOf(name) === -1
-                    ? theme.typography.fontWeightRegular
-                    : theme.typography.fontWeightMedium,
-        };
-    }
 
     const handleSubmit = async () => {
         if (!playlistId) {
@@ -64,8 +58,6 @@ const AddPlaylistTrack = (props: IProps) => {
             toast.error("Vui lòng chọn tracks!")
             return;
         }
-
-
         const chosenPlaylist = playlists.find(i => i._id === playlistId);
         let tracks = tracksId?.map(item => item?.split("###")?.[1]);
 
@@ -104,23 +96,19 @@ const AddPlaylistTrack = (props: IProps) => {
         }
     }
 
-
-
     return (
         <>
             <Button startIcon={<AddIcon />} variant="outlined" onClick={() => setOpen(true)}>Tracks</Button>
-
             <Dialog open={open} onClose={handleClose} maxWidth={"sm"} fullWidth>
-                <DialogTitle>Thêm track to playlist:</DialogTitle>
-                <DialogContent >
-
+                <DialogTitle>Add new Playlist</DialogTitle>
+                <DialogContent>
                     <Box width={"100%"} sx={{ display: "flex", gap: "30px", flexDirection: "column" }}>
-                        <FormControl fullWidth variant="standard" sx={{ mt: 1 }}>
-                            <InputLabel>Chọn playlist</InputLabel>
+                        <FormControl fullWidth variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel>Choose Playlist</InputLabel>
                             <Select
                                 value={playlistId}
-                                label="Playlist"
                                 onChange={(e) => setPlaylistId(e.target.value)}
+                                label="Playlist"
                             >
                                 {playlists.map(item => {
                                     return (
@@ -129,9 +117,7 @@ const AddPlaylistTrack = (props: IProps) => {
                                 })}
                             </Select>
                         </FormControl>
-                    </Box>
-                    <Box>
-                        <FormControl sx={{ mt: 5, width: "100%" }}>
+                        <FormControl sx={{ m: 1, width: "100%" }}>
                             <InputLabel id="demo-multiple-chip-label">Track</InputLabel>
                             <Select
                                 multiple
@@ -139,39 +125,35 @@ const AddPlaylistTrack = (props: IProps) => {
                                 onChange={(e) => {
                                     setTracksId(e.target.value as any)
                                 }}
-                                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                                input={<OutlinedInput id="select-multiple-chip" label="Track" />}
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                        {selected.map(value => {
-                                            return (
-                                                <Chip key={value} label={value?.split("###")?.[0]} />
-                                            )
-                                        })}
+                                        {selected.map((value) => (
+                                            <Chip key={value} label={value?.split("###")?.[0]} />
+                                        ))}
                                     </Box>
                                 )}
                             >
-                                {tracks.map((track) => {
-                                    return (
-                                        <MenuItem
-                                            key={track._id}
-                                            value={`${track.title}###${track._id}`}
-                                            style={getStyles(`${track.title}###${track._id}`, tracksId, theme)}
-                                        >
-                                            {track.title}
-                                        </MenuItem>
-                                    )
-                                })}
+                                {tracks.map((track) => (
+                                    <MenuItem
+                                        key={track._id}
+                                        value={`${track.title}###${track._id}`}
+                                        style={getStyles(`${track.title}###${track._id}`, tracksId, theme)}
+                                    >
+                                        {track.title}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose("", "")}>Cancel</Button>
+                    <Button onClick={() => setOpen(false)}>Close</Button>
                     <Button onClick={() => handleSubmit()}>Save</Button>
                 </DialogActions>
-            </Dialog >
+            </Dialog>
         </>
     )
 }
 
-export default AddPlaylistTrack;
+export default AddPlaylistTrack

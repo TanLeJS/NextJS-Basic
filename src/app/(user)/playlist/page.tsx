@@ -1,18 +1,18 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import AddPlaylistTrack from "@/components/playlist/add.playlist.track";
-import CurrentTrack from "@/components/playlist/current.track";
-import NewPlaylist from "@/components/playlist/new.playlist";
-import { sendRequest } from "@/utils/api";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import { default as Box, default as Container } from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
-import Typography from '@mui/material/Typography';
-import type { Metadata } from 'next';
-import { getServerSession } from "next-auth";
-import { Fragment } from 'react';
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import AddPlaylistTrack from "@/components/playlist/add.playlist.track"
+import CurrentTrack from "@/components/playlist/current.track"
+import NewPlaylist from "@/components/playlist/new.playlist"
+import { sendRequest } from "@/utils/api"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Box, Container } from "@mui/material"
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import Divider from "@mui/material/Divider"
+import Typography from '@mui/material/Typography'
+import { Metadata } from "next"
+import { getServerSession } from "next-auth"
+import { Fragment } from 'react'
 
 export const metadata: Metadata = {
     title: 'Playlist bạn đã tạo',
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
 
 const PlaylistPage = async () => {
     const session = await getServerSession(authOptions);
-
     const res = await sendRequest<IBackendRes<IModelPaginate<IPlaylist>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/by-user`,
         method: "POST",
@@ -46,14 +45,14 @@ const PlaylistPage = async () => {
     const playlists = res?.data?.result ?? [];
     const tracks = res1?.data?.result ?? [];
 
-
     return (
         <Container sx={{ mt: 3, p: 3, background: "#f3f6f9", borderRadius: "3px" }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3>Danh sách phát</h3>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} >
+                <h3>Playlist</h3>
                 <div style={{ display: "flex", gap: "20px" }}>
                     <NewPlaylist />
                     <AddPlaylistTrack
+                        //@ts-ignore
                         playlists={playlists}
                         tracks={tracks}
                     />
@@ -88,6 +87,7 @@ const PlaylistPage = async () => {
             </Box>
         </Container>
     )
+
 }
 
-export default PlaylistPage;
+export default PlaylistPage

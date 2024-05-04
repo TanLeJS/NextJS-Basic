@@ -52,7 +52,6 @@ declare global {
 
     interface IShareTrack extends ITrackTop {
         isPlaying: boolean;
-        
     }
 
     interface ITrackContext {
@@ -99,6 +98,13 @@ declare global {
         _id: string,
         title: string,
         isPublic: boolean,
-        tracks: Array,
+        tracks:  ITrackTop[],
+        user: {
+            _id: string,
+            email: string,
+            name: string,
+            role: string,
+            type: string,
+        },
     }
 }
